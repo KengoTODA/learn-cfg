@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'eclipse'
+    id 'net.ltgt.apt-eclipse' version '0.19'
+    id 'com.diffplug.gradle.spotless' version '3.16.0'
+    id 'se.patrikerdes.use-latest-versions' version '0.2.7'
+    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'com.github.spotbugs' version '1.6.8'
+}
+
+apply from: "$rootDir/gradle/jacoco.gradle"
+apply from: "$rootDir/gradle/spotless.gradle"
+apply from: "$rootDir/gradle/publish.gradle"
+
+version = '0.1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories { mavenCentral() }
+
+ext {
+    junitVersion = '5.3.2'
+    guavaVersion = '27.0.1-jre'
+    immutablesVersion = '2.7.3'
+}
+
+dependencies {
+    compile 'org.ow2.asm:asm-analysis:7.0'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    compileOnly "org.immutables:value:${immutablesVersion}:annotations"
+    annotationProcessor "org.immutables:value:${immutablesVersion}"
+    testCompile "com.google.guava:guava:${guavaVersion}"
+    testCompile "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+test { useJUnitPlatform() }
+
+defaultTasks 'spotlessApply', 'build'
