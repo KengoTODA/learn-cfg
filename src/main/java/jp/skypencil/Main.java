@@ -47,6 +47,12 @@ public class Main {
                 protected void newControlFlowEdge(final int insnIndex, final int successorIndex) {
                   System.out.printf("    edge%d_%d -> edge%d_%d;%n", index, insnIndex, index, successorIndex);
                 }
+
+                @Override
+                protected boolean newControlFlowExceptionEdge(final int insnIndex, final int successorIndex) {
+                  System.out.printf("    edge%d_%d -> edge%d_%d [color = \"red\"];%n", index, insnIndex, index, successorIndex);
+                  return true;
+                }
               };
           analyzer.analyze(classNode.name, method);
           System.out.println("  }");
