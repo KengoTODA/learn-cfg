@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -15,11 +16,16 @@ import org.objectweb.asm.tree.analysis.BasicValue;
 
 public class Main {
   public Main() {
+    Object o = null;
     if (System.currentTimeMillis() % 2 == 0) {
       System.out.println("0");
     } else {
       System.out.println("1");
+      o = new Object();
     }
+    if (o != null) System.out.println(o);
+    Runnable a = System.out::close;
+    a.run();
   }
 
   public static void main(String... args) throws IOException, AnalyzerException {
@@ -42,27 +48,44 @@ public class Main {
             System.out.printf("    edge%d_%d [label=\"%s\"];%n", index, i, insn.getClass());
           }
 
-          Analyzer<BasicValue> analyzer =
-              new Analyzer<BasicValue>(new BasicInterpreter()) {
-                @Override
-                protected void newControlFlowEdge(final int insnIndex, final int successorIndex) {
-                  System.out.printf(
-                      "    edge%d_%d -> edge%d_%d;%n", index, insnIndex, index, successorIndex);
-                }
+          if (false) {
+            Analyzer<BasicValue> analyzer =
+                new Analyzer<BasicValue>(
+                    new BasicInterpreter(Opcodes.ASM7) {
+                      @Override
+                      public BasicValue merge(final BasicValue value1, final BasicValue value2) {
+                        // if (!value1.equals(value2)) {
+                        System.err.printf("%s, %s%n", value1.getType(), value2.getType());
 
-                @Override
-                protected boolean newControlFlowExceptionEdge(
-                    final int insnIndex, final int successorIndex) {
-                  System.out.printf(
-                      "    edge%d_%d -> edge%d_%d [color = \"red\"];%n",
-                      index, insnIndex, index, successorIndex);
-                  return true;
-                }
-              };
-          analyzer.analyze(classNode.name, method);
-          System.out.println("  }");
+                        // }
+                        return super.merge(value1, value2);
+                      }
+                    }) {
+                  @Override
+                  protected void newControlFlowEdge(final int insnIndex, final int successorIndex) {
+                    System.out.printf(
+                        "    edge%d_%d -> edge%d_%d;%n", index, insnIndex, index, successorIndex);
+                  }
+
+                  @Override
+                  protected boolean newControlFlowExceptionEdge(
+                      final int insnIndex, final int successorIndex) {
+                    System.out.printf(
+                        "    edge%d_%d -> edge%d_%d [color = \"red\"];%n",
+                        index, insnIndex, index, successorIndex);
+                    return true;
+                  }
+                };
+            analyzer.analyze(classNode.name, method);
+            System.out.println("  }");
+          } else {
+            Analyzer<CloseableValue> analyzer = new Analyzer<>(new CloseableInterpreter());
+            analyzer.analyze(classNode.name, method);
+            System.out.println("  }");
+          }
         }
         methodIndex++;
+        break;
       }
       System.out.println("}");
     }
