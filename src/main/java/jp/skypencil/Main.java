@@ -20,6 +20,9 @@ import org.objectweb.asm.tree.analysis.BasicInterpreter;
 import org.objectweb.asm.tree.analysis.BasicValue;
 
 public class Main {
+  private static final String DEFAULT =
+      "/Users/kengo/GitHub/spotbugs/spotbugsTestCases/build/classes/java/java11/Issue1338.class";
+
   public Main() {
     Object o = null;
     if (System.currentTimeMillis() % 2 == 0) {
@@ -34,8 +37,8 @@ public class Main {
   }
 
   public static void main(String... args) throws IOException, AnalyzerException {
-    try (InputStream input =
-        Files.newInputStream(Paths.get("/Users/kengo/GitHub/spotbugs/spotbugsTestCases/build/classes/java/main/Issue493.class"))) {
+    String classFile = args.length == 0 ? DEFAULT : args[0];
+    try (InputStream input = Files.newInputStream(Paths.get(classFile))) {
       ClassReader classReader = new ClassReader(input);
       ClassNode classNode = new ClassNode();
       classReader.accept(classNode, ClassReader.SKIP_DEBUG);
@@ -52,14 +55,19 @@ public class Main {
             AbstractInsnNode insn = method.instructions.get(i);
             if (insn instanceof MethodInsnNode) {
               MethodInsnNode methodInsn = (MethodInsnNode) insn;
-              System.out.printf("    edge%d_%d [label=\"%s#%s%s\"];%n", index, i, methodInsn.owner, methodInsn.name, methodInsn.desc);
+              System.out.printf(
+                  "    edge%d_%d [label=\"%s#%s%s\"];%n",
+                  index, i, methodInsn.owner, methodInsn.name, methodInsn.desc);
             } else if (insn instanceof FieldInsnNode) {
               FieldInsnNode fieldInsn = (FieldInsnNode) insn;
-              System.out.printf("    edge%d_%d [label=\"%s#%s (%s)\"];%n", index, i, fieldInsn.owner, fieldInsn.name, fieldInsn.desc);
+              System.out.printf(
+                  "    edge%d_%d [label=\"%s#%s (%s)\"];%n",
+                  index, i, fieldInsn.owner, fieldInsn.name, fieldInsn.desc);
             } else if (insn instanceof VarInsnNode) {
               VarInsnNode varInsn = (VarInsnNode) insn;
               String insnName = getName(varInsn.getOpcode());
-              System.out.printf("    edge%d_%d [label=\"%s (%d)\"];%n", index, i, insnName, varInsn.var);
+              System.out.printf(
+                  "    edge%d_%d [label=\"%s (%d)\"];%n", index, i, insnName, varInsn.var);
             } else if (insn instanceof InsnNode) {
               InsnNode insnNode = (InsnNode) insn;
               String insnName = getName(insnNode.getOpcode());
@@ -76,7 +84,7 @@ public class Main {
                       @Override
                       public BasicValue merge(final BasicValue value1, final BasicValue value2) {
                         // if (!value1.equals(value2)) {
-                      //  System.err.printf("%s, %s%n", value1.getType(), value2.getType());
+                        //  System.err.printf("%s, %s%n", value1.getType(), value2.getType());
 
                         // }
                         return super.merge(value1, value2);
@@ -109,10 +117,11 @@ public class Main {
                           break;
                       }
                       System.out.printf(
-                              "    edge%d_%d -> edge%d_%d [label=\"%s\"];%n", index, insnIndex, index, successorIndex, label);
+                          "    edge%d_%d -> edge%d_%d [label=\"%s\"];%n",
+                          index, insnIndex, index, successorIndex, label);
                     } else {
                       System.out.printf(
-                              "    edge%d_%d -> edge%d_%d;%n", index, insnIndex, index, successorIndex);
+                          "    edge%d_%d -> edge%d_%d;%n", index, insnIndex, index, successorIndex);
                     }
                   }
 
@@ -134,17 +143,22 @@ public class Main {
           }
         }
         methodIndex++;
-//        break;
+        //        break;
       }
       System.out.println("}");
     }
   }
+
   private static String getName(int opcode) {
     switch (opcode) {
-      case Opcodes.ALOAD: return "ALOAD";
-      case Opcodes.ASTORE: return "ASTORE";
-      case Opcodes.RETURN: return "RETURN";
-      case Opcodes.ATHROW: return "ATHROW";
+      case Opcodes.ALOAD:
+        return "ALOAD";
+      case Opcodes.ASTORE:
+        return "ASTORE";
+      case Opcodes.RETURN:
+        return "RETURN";
+      case Opcodes.ATHROW:
+        return "ATHROW";
     }
     return "unknonw (" + opcode + ")";
   }
