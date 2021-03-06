@@ -6,17 +6,16 @@ This is a small project to learn about [CFG (Control Flow Graph) based on Object
 To visualize result, use [`dot` command](https://www.graphviz.org/doc/info/command.html) to generate PNG file. For instance, the following example will generate a PNG file from `result.dot` in current working directory:
 
 ```bash
+$ ./gradlew run --args /path/to/target.class
 $ dot result.dot -T png -o out.png
 ```
 
 To format Java codes, run `./gradlew spotlessApply` that is supported by [spotless plugin](https://github.com/diffplug/spotless).
 
-To upgrade dependencies and plugins, run `./gradlew useLatestVersions` that is supported by [use-latest-versions plugin](https://github.com/patrikerdes/gradle-use-latest-versions-plugin).
-
 Copyright
 ---------
 
-Copyright 2019 Kengo TODA
+Copyright 2019-2021 Kengo TODA
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
