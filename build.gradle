@@ -1,12 +1,11 @@
 plugins {
-    id 'java'
+    id 'application'
     id 'jacoco'
-    id 'eclipse'
-    id 'net.ltgt.apt-eclipse' version '0.19'
-    id 'com.diffplug.gradle.spotless' version '3.16.0'
-    id 'se.patrikerdes.use-latest-versions' version '0.2.7'
-    id 'com.github.ben-manes.versions' version '0.20.0'
-    id 'com.github.spotbugs' version '1.6.8'
+    id 'com.diffplug.spotless' version '5.11.0'
+}
+
+application {
+    mainClass = 'jp.skypencil.Main'
 }
 
 apply from: "$rootDir/gradle/jacoco.gradle"
@@ -14,15 +13,17 @@ apply from: "$rootDir/gradle/spotless.gradle"
 apply from: "$rootDir/gradle/publish.gradle"
 
 version = '0.1.0-SNAPSHOT'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+    options.release = 8
+}
 
 repositories { mavenCentral() }
 
 ext {
-    junitVersion = '5.3.2'
-    guavaVersion = '27.0.1-jre'
-    immutablesVersion = '2.7.3'
+    junitVersion = '5.7.1'
+    guavaVersion = '30.1-jre'
+    immutablesVersion = '2.8.2'
 }
 
 dependencies {
