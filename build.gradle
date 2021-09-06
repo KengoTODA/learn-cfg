@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'jacoco'
-    id 'com.diffplug.spotless' version '5.14.3'
+    id 'com.diffplug.spotless' version '5.15.0'
 }
 
 application {
