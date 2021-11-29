@@ -21,7 +21,7 @@ tasks.withType(JavaCompile) {
 repositories { mavenCentral() }
 
 ext {
-    junitVersion = '5.8.1'
+    junitVersion = '5.8.2'
     guavaVersion = '31.0.1-jre'
     immutablesVersion = '2.8.9-ea-1'
 }
