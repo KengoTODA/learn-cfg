@@ -27,7 +27,7 @@ ext {
 }
 
 dependencies {
-    compile 'org.ow2.asm:asm-analysis:9.3'
+    compile 'org.ow2.asm:asm-analysis:9.4'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     compileOnly "org.immutables:value:${immutablesVersion}:annotations"
     annotationProcessor "org.immutables:value:${immutablesVersion}"
