@@ -3,6 +3,21 @@ Small project to learn about CFG
 
 This is a small project to learn about [CFG (Control Flow Graph) based on ObjectWeb ASM](https://asm.ow2.io/developer-guide.html#controlflow).
 
+## Requirements
+
+- Java 17 or later
+- Gradle 9.2.0 or later (via included wrapper)
+
+## Building
+
+To build the project:
+
+```bash
+./gradlew build
+```
+
+## Usage
+
 To visualize result, use [`dot` command](https://www.graphviz.org/doc/info/command.html) to generate PNG file. For instance, the following example will generate a PNG file from `result.dot` in current working directory:
 
 ```bash
@@ -10,7 +25,16 @@ $ ./gradlew run --args /path/to/target.class
 $ dot result.dot -T png -o out.png
 ```
 
-To format Java codes, run `./gradlew spotlessApply` that is supported by [spotless plugin](https://github.com/diffplug/spotless).
+## Code Formatting
+
+To format Kotlin codes, run `./gradlew spotlessApply` that is supported by [spotless plugin](https://github.com/diffplug/spotless).
+
+## Technology Stack
+
+- **Language**: Kotlin 2.1.0
+- **Build Tool**: Gradle 9.2.0 with Kotlin DSL
+- **Analysis Library**: ObjectWeb ASM 9.5
+- **JVM Target**: Java 17
 
 Copyright
 ---------
