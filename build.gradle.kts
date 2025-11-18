@@ -18,7 +18,7 @@ val guavaVersion = "31.1-jre"
 val immutablesVersion = "2.9.3"
 
 dependencies {
-    implementation("org.ow2.asm:asm-analysis:9.5")
+    implementation("org.ow2.asm:asm-analysis:9.9")
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
     compileOnly("org.immutables:value:$immutablesVersion:annotations")
     annotationProcessor("org.immutables:value:$immutablesVersion")
