@@ -14,7 +14,7 @@ repositories {
 }
 
 val junitVersion = "5.9.3"
-val guavaVersion = "31.1-jre"
+val guavaVersion = "33.5.0-jre"
 val immutablesVersion = "2.9.3"
 
 dependencies {
