@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.2.21"
     application
     jacoco
     id("com.diffplug.spotless") version "6.19.0"
