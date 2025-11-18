@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
 }
 
-val junitVersion = "5.9.3"
+val junitVersion = "6.0.1"
 val guavaVersion = "31.1-jre"
 val immutablesVersion = "2.9.3"
 
